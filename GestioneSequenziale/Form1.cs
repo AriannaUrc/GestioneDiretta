@@ -62,5 +62,17 @@ namespace GestioneSequenziale
             Console.ReadLine();
             sr.Close();
         }
+
+        private void salva_button_Click(object sender, EventArgs e)
+        {
+            FileStream fs = new FileStream("dati.csv", FileMode.Append, FileAccess.Write);
+            StreamWriter sw = new StreamWriter(fs);
+
+            sw.WriteLine(nome_textbox.Text + ";" + prezzo_textbox.Text);
+            
+            sw.Flush();
+            sw.Close();
+            fs.Close();
+        }
     }
 }
