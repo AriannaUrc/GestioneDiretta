@@ -23,12 +23,15 @@ namespace GestioneSequenziale
         }
 
 
-        public prodotto p = new prodotto();
+        public prodotto p;
 
 
         public Form1()
         {
             InitializeComponent();
+            prodotto p = new prodotto();
+            StreamWriter sw = new StreamWriter("dati.csv", true);
+            sw.Close();
         }
 
         public void Crea()
@@ -36,6 +39,9 @@ namespace GestioneSequenziale
             p.nome = nome_textbox.Text;
             p.prezzo = float.Parse(prezzo_textbox.Text);
             p.quantita = 1;
+            StreamWriter sw = new StreamWriter("dati.csv",true);
+            sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita);
+            sw.Close();
         }
 
         public string ProdString(prodotto p)
@@ -46,7 +52,6 @@ namespace GestioneSequenziale
         private void leggi_button_Click(object sender, EventArgs e)
         {
             StreamReader sr = new StreamReader("dati.csv");
-            sr.BaseStream.Seek(0, SeekOrigin.Begin);
 
 
             char limite = char.Parse(";");
@@ -61,6 +66,7 @@ namespace GestioneSequenziale
                 words = str.Split(limite);
                 p.nome = words[0];
                 p.prezzo = float.Parse(words[1]);
+                p.quantita=int.Parse(words[2]);
                 output.Items.Add(ProdString(p));
                 str = sr.ReadLine();
             }
@@ -96,7 +102,6 @@ namespace GestioneSequenziale
                 sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita);
                 str = sr.ReadLine();
             }
-
             if (!doppione)
             {
                 Crea();
