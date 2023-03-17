@@ -35,10 +35,10 @@
             this.leggi_button = new System.Windows.Forms.Button();
             this.nome_textbox = new System.Windows.Forms.TextBox();
             this.prezzo_textbox = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.nuovoNome_textbox = new System.Windows.Forms.TextBox();
+            this.nomeDaMod_textbox = new System.Windows.Forms.TextBox();
+            this.nuovoPrezzo_textbox = new System.Windows.Forms.TextBox();
+            this.nomeDaCancellare_textbox = new System.Windows.Forms.TextBox();
             this.prezzo_label = new System.Windows.Forms.Label();
             this.nome_label = new System.Windows.Forms.Label();
             this.nomeDaCancellare_label = new System.Windows.Forms.Label();
@@ -55,6 +55,7 @@
             this.output.Size = new System.Drawing.Size(294, 426);
             this.output.TabIndex = 0;
             this.output.UseCompatibleStateImageBehavior = false;
+            this.output.View = System.Windows.Forms.View.List;
             // 
             // salva_button
             // 
@@ -74,6 +75,7 @@
             this.cancella_button.TabIndex = 2;
             this.cancella_button.Text = "Cancella";
             this.cancella_button.UseVisualStyleBackColor = true;
+            this.cancella_button.Click += new System.EventHandler(this.cancella_button_Click);
             // 
             // modifica_button
             // 
@@ -108,33 +110,33 @@
             this.prezzo_textbox.Size = new System.Drawing.Size(100, 20);
             this.prezzo_textbox.TabIndex = 6;
             // 
-            // textBox3
+            // nuovoNome_textbox
             // 
-            this.textBox3.Location = new System.Drawing.Point(277, 134);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(86, 20);
-            this.textBox3.TabIndex = 8;
+            this.nuovoNome_textbox.Location = new System.Drawing.Point(277, 134);
+            this.nuovoNome_textbox.Name = "nuovoNome_textbox";
+            this.nuovoNome_textbox.Size = new System.Drawing.Size(86, 20);
+            this.nuovoNome_textbox.TabIndex = 8;
             // 
-            // textBox4
+            // nomeDaMod_textbox
             // 
-            this.textBox4.Location = new System.Drawing.Point(156, 134);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 7;
+            this.nomeDaMod_textbox.Location = new System.Drawing.Point(156, 134);
+            this.nomeDaMod_textbox.Name = "nomeDaMod_textbox";
+            this.nomeDaMod_textbox.Size = new System.Drawing.Size(100, 20);
+            this.nomeDaMod_textbox.TabIndex = 7;
             // 
-            // textBox5
+            // nuovoPrezzo_textbox
             // 
-            this.textBox5.Location = new System.Drawing.Point(375, 134);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(76, 20);
-            this.textBox5.TabIndex = 9;
+            this.nuovoPrezzo_textbox.Location = new System.Drawing.Point(375, 134);
+            this.nuovoPrezzo_textbox.Name = "nuovoPrezzo_textbox";
+            this.nuovoPrezzo_textbox.Size = new System.Drawing.Size(76, 20);
+            this.nuovoPrezzo_textbox.TabIndex = 9;
             // 
-            // textBox6
+            // nomeDaCancellare_textbox
             // 
-            this.textBox6.Location = new System.Drawing.Point(156, 86);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 20);
-            this.textBox6.TabIndex = 10;
+            this.nomeDaCancellare_textbox.Location = new System.Drawing.Point(156, 86);
+            this.nomeDaCancellare_textbox.Name = "nomeDaCancellare_textbox";
+            this.nomeDaCancellare_textbox.Size = new System.Drawing.Size(100, 20);
+            this.nomeDaCancellare_textbox.TabIndex = 10;
             // 
             // prezzo_label
             // 
@@ -201,10 +203,10 @@
             this.Controls.Add(this.nomeDaCancellare_label);
             this.Controls.Add(this.prezzo_label);
             this.Controls.Add(this.nome_label);
-            this.Controls.Add(this.textBox6);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.nomeDaCancellare_textbox);
+            this.Controls.Add(this.nuovoPrezzo_textbox);
+            this.Controls.Add(this.nuovoNome_textbox);
+            this.Controls.Add(this.nomeDaMod_textbox);
             this.Controls.Add(this.prezzo_textbox);
             this.Controls.Add(this.nome_textbox);
             this.Controls.Add(this.leggi_button);
@@ -228,10 +230,10 @@
         private System.Windows.Forms.Button leggi_button;
         private System.Windows.Forms.TextBox nome_textbox;
         private System.Windows.Forms.TextBox prezzo_textbox;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox nuovoNome_textbox;
+        private System.Windows.Forms.TextBox nomeDaMod_textbox;
+        private System.Windows.Forms.TextBox nuovoPrezzo_textbox;
+        private System.Windows.Forms.TextBox nomeDaCancellare_textbox;
         private System.Windows.Forms.Label prezzo_label;
         private System.Windows.Forms.Label nome_label;
         private System.Windows.Forms.Label nomeDaCancellare_label;

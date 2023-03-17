@@ -31,6 +31,12 @@ namespace GestioneSequenziale
             InitializeComponent();
         }
 
+        public void Crea()
+        {
+            p.nome = nome_textbox.Text;
+            p.prezzo = float.Parse(prezzo_textbox.Text);
+            p.quantita = 1;
+        }
 
         public string ProdString(prodotto p)
         {
@@ -65,14 +71,69 @@ namespace GestioneSequenziale
 
         private void salva_button_Click(object sender, EventArgs e)
         {
-            FileStream fs = new FileStream("dati.csv", FileMode.Append, FileAccess.Write);
-            StreamWriter sw = new StreamWriter(fs);
+            StreamWriter sw = new StreamWriter("datiTemp.csv", true);
+            StreamReader sr = new StreamReader("dati.csv");
 
-            sw.WriteLine(nome_textbox.Text + ";" + prezzo_textbox.Text);
+            bool doppione = false;
+            char limite = char.Parse(";");
+
+            string[] words = new string[3];
+
+            string str = sr.ReadLine();
+
+            while (str != null)
+            {
+                words = str.Split(limite);
+                p.nome = words[0];
+                p.prezzo = float.Parse(words[1]);
+                p.quantita = int.Parse(words[2]);
+
+                if (p.nome == nome_textbox.Text)
+                {
+                    p.quantita++;
+                    doppione = true;
+                }
+                sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita);
+                str = sr.ReadLine();
+            }
+
+            if (!doppione)
+            {
+                Crea();
+            }
             
-            sw.Flush();
             sw.Close();
-            fs.Close();
+            sr.Close();
+            File.Move("datiTemp.csv", "dati.csv");
+        }
+
+        private void cancella_button_Click(object sender, EventArgs e)
+        {
+            StreamReader sr = new StreamReader("dati.csv");
+
+            char limite = char.Parse(";");
+            string[] words = new string[3];
+
+
+            string str = sr.ReadLine();
+
+            while (str != null)
+            {
+                words = str.Split(limite);
+                p.nome = words[0];
+                p.prezzo = float.Parse(words[1]);
+                p.quantita = int.Parse(words[2]);
+                if (p.nome!=nomeDaCancellare_textbox.Text)
+                {
+                    StreamWriter sw = new StreamWriter("datiTemp.csv", true);
+                    sw.WriteLine(p.nome + ";" + p.prezzo + ";"+p.quantita);
+                    sw.Close();
+                }
+                str = sr.ReadLine();
+            }
+            sr.Close();
+            File.Move("datiTemp.csv", "dati.csv");
+            
         }
     }
 }
