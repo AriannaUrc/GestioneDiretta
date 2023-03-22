@@ -121,6 +121,83 @@ namespace GestioneSequenziale
             sr.Close();
         }
 
+
+        public void Cancella()
+        {
+            StreamReader sr = new StreamReader("dati.csv");
+            StreamWriter sw = new StreamWriter("datiTemp.csv", true);
+
+            char limite = char.Parse(";");
+            string[] words = new string[3];
+
+
+            string str = sr.ReadLine();
+
+            while (str != null)
+            {
+                
+                words = str.Split(limite);
+                p.nome = words[0];
+                p.prezzo = float.Parse(words[1]);
+                p.quantita = int.Parse(words[2]);
+
+                if (p.nome != nomeDaCancellare_textbox.Text)
+                {
+                    
+                    sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita);
+                    
+                }
+                str = sr.ReadLine();
+                
+            }
+            sw.Close();
+            sr.Close();
+            File.Delete("dati.csv");
+            File.Move("datiTemp.csv", "dati.csv");
+        }
+
+
+        public void Modifica()
+        {
+            StreamReader sr = new StreamReader("dati.csv");
+            StreamWriter sw = new StreamWriter("datiTemp.csv", true);
+
+            char limite = char.Parse(";");
+            string[] words = new string[3];
+
+
+            string str = sr.ReadLine();
+
+            while (str != null)
+            {
+
+                words = str.Split(limite);
+                p.nome = words[0];
+                p.prezzo = float.Parse(words[1]);
+                p.quantita = int.Parse(words[2]);
+
+
+                if (p.nome == nomeDaMod_textbox.Text)
+                {
+                    p.nome = nuovoNome_textbox.Text;
+                    p.prezzo = float.Parse(nuovoPrezzo_textbox.Text);
+                    p.quantita = 1;
+                }
+
+                sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita);
+
+                str = sr.ReadLine();
+
+            }
+            sw.Close();
+            sr.Close();
+            File.Delete("dati.csv");
+            File.Move("datiTemp.csv", "dati.csv");
+        }
+
+
+
+
         private void leggi_button_Click(object sender, EventArgs e)
         {
             Leggi();
@@ -134,31 +211,15 @@ namespace GestioneSequenziale
 
         private void cancella_button_Click(object sender, EventArgs e)
         {
-            StreamReader sr = new StreamReader("dati.csv");
+            Cancella();
+            Leggi();
+        }
 
-            char limite = char.Parse(";");
-            string[] words = new string[3];
+        private void modifica_button_Click(object sender, EventArgs e)
+        {
+            Modifica();
+            Leggi();
 
-
-            string str = sr.ReadLine();
-
-            while (str != null)
-            {
-                words = str.Split(limite);
-                p.nome = words[0];
-                p.prezzo = float.Parse(words[1]);
-                p.quantita = int.Parse(words[2]);
-                if (p.nome!=nomeDaCancellare_textbox.Text)
-                {
-                    StreamWriter sw = new StreamWriter("datiTemp.csv", true);
-                    sw.WriteLine(p.nome + ";" + p.prezzo + ";"+p.quantita);
-                    sw.Close();
-                }
-                str = sr.ReadLine();
-            }
-            sr.Close();
-            File.Move("datiTemp.csv", "dati.csv");
-            
         }
     }
 }

@@ -85,6 +85,7 @@
             this.modifica_button.TabIndex = 3;
             this.modifica_button.Text = "Modifica";
             this.modifica_button.UseVisualStyleBackColor = true;
+            this.modifica_button.Click += new System.EventHandler(this.modifica_button_Click);
             // 
             // leggi_button
             // 
