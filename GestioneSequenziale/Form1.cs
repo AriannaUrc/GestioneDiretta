@@ -29,17 +29,15 @@ namespace GestioneSequenziale
         public Form1()
         {
             InitializeComponent();
-            prodotto p = new prodotto();
-            StreamWriter sw = new StreamWriter("dati.csv", true);
-            sw.Close();
+            p = new prodotto();
         }
 
-        public void Crea()
+        public void Crea(string FileName)
         {
+            StreamWriter sw = new StreamWriter(FileName, true);
             p.nome = nome_textbox.Text;
             p.prezzo = float.Parse(prezzo_textbox.Text);
             p.quantita = 1;
-            StreamWriter sw = new StreamWriter("dati.csv",true);
             sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita);
             sw.Close();
         }
@@ -49,36 +47,14 @@ namespace GestioneSequenziale
             return "Nome: " + p.nome + "  Prezzo: " + p.prezzo.ToString() + "  Quantità: " + p.quantita.ToString();
         }
 
-        private void leggi_button_Click(object sender, EventArgs e)
+
+
+        public void Salva()
         {
+            string NomeTemp= "datiTemp.csv";
+
             StreamReader sr = new StreamReader("dati.csv");
-
-
-            char limite = char.Parse(";");
-
-            string[] words = new string[2];
-
-            string str = sr.ReadLine();
-
-
-            while (str != null)
-            {
-                words = str.Split(limite);
-                p.nome = words[0];
-                p.prezzo = float.Parse(words[1]);
-                p.quantita=int.Parse(words[2]);
-                output.Items.Add(ProdString(p));
-                str = sr.ReadLine();
-            }
-
-            Console.ReadLine();
-            sr.Close();
-        }
-
-        private void salva_button_Click(object sender, EventArgs e)
-        {
-            StreamWriter sw = new StreamWriter("datiTemp.csv", true);
-            StreamReader sr = new StreamReader("dati.csv");
+            StreamWriter sw = new StreamWriter(NomeTemp, true);
 
             bool doppione = false;
             char limite = char.Parse(";");
@@ -89,6 +65,9 @@ namespace GestioneSequenziale
 
             while (str != null)
             {
+                
+                
+                doppione = false;
                 words = str.Split(limite);
                 p.nome = words[0];
                 p.prezzo = float.Parse(words[1]);
@@ -96,20 +75,61 @@ namespace GestioneSequenziale
 
                 if (p.nome == nome_textbox.Text)
                 {
-                    p.quantita++;
+                    
                     doppione = true;
+                    p.quantita++;
                 }
                 sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita);
                 str = sr.ReadLine();
             }
+
+            sw.Close();
             if (!doppione)
             {
-                Crea();
+                Crea(NomeTemp);
             }
-            
-            sw.Close();
+
             sr.Close();
-            File.Move("datiTemp.csv", "dati.csv");
+            File.Delete("dati.csv");
+            File.Move(NomeTemp, "dati.csv");
+        }
+
+
+        public void Leggi()
+        {
+            StreamReader sr = new StreamReader("dati.csv");
+
+            char limite = char.Parse(";");
+
+            string[] words = new string[2];
+
+            string str = sr.ReadLine();
+
+            output.Items.Clear();
+
+            while (str != null)
+            {
+                words = str.Split(limite);
+                p.nome = words[0];
+                p.prezzo = float.Parse(words[1]);
+                p.quantita = int.Parse(words[2]);
+                output.Items.Add(ProdString(p));
+                str = sr.ReadLine();
+            }
+
+            Console.ReadLine();
+            sr.Close();
+        }
+
+        private void leggi_button_Click(object sender, EventArgs e)
+        {
+            Leggi();
+        }
+
+        private void salva_button_Click(object sender, EventArgs e)
+        {
+            Salva();
+            Leggi();
         }
 
         private void cancella_button_Click(object sender, EventArgs e)
