@@ -45,6 +45,13 @@
             this.nuovoPrezzo_label = new System.Windows.Forms.Label();
             this.nuovoNome_label = new System.Windows.Forms.Label();
             this.nomeDaMod_label = new System.Windows.Forms.Label();
+            this.Canc_logica_button = new System.Windows.Forms.Button();
+            this.nomeCancLog_textBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.Compattazione_button = new System.Windows.Forms.Button();
+            this.ripristino_button = new System.Windows.Forms.Button();
+            this.nomeDaRipr_textBox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // output
@@ -193,11 +200,78 @@
             this.nomeDaMod_label.TabIndex = 17;
             this.nomeDaMod_label.Text = "Nome da modificare";
             // 
+            // Canc_logica_button
+            // 
+            this.Canc_logica_button.Location = new System.Drawing.Point(60, 231);
+            this.Canc_logica_button.Name = "Canc_logica_button";
+            this.Canc_logica_button.Size = new System.Drawing.Size(75, 23);
+            this.Canc_logica_button.TabIndex = 20;
+            this.Canc_logica_button.Text = "Canc Log";
+            this.Canc_logica_button.UseVisualStyleBackColor = true;
+            this.Canc_logica_button.Click += new System.EventHandler(this.Canc_logica_button_Click);
+            // 
+            // nomeCancLog_textBox
+            // 
+            this.nomeCancLog_textBox.Location = new System.Drawing.Point(156, 234);
+            this.nomeCancLog_textBox.Name = "nomeCancLog_textBox";
+            this.nomeCancLog_textBox.Size = new System.Drawing.Size(100, 20);
+            this.nomeCancLog_textBox.TabIndex = 21;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(155, 218);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(102, 13);
+            this.label1.TabIndex = 22;
+            this.label1.Text = "Nome da cancellare";
+            // 
+            // Compattazione_button
+            // 
+            this.Compattazione_button.Location = new System.Drawing.Point(60, 318);
+            this.Compattazione_button.Name = "Compattazione_button";
+            this.Compattazione_button.Size = new System.Drawing.Size(93, 23);
+            this.Compattazione_button.TabIndex = 23;
+            this.Compattazione_button.Text = "Compattazione";
+            this.Compattazione_button.UseVisualStyleBackColor = true;
+            // 
+            // ripristino_button
+            // 
+            this.ripristino_button.Location = new System.Drawing.Point(60, 276);
+            this.ripristino_button.Name = "ripristino_button";
+            this.ripristino_button.Size = new System.Drawing.Size(75, 23);
+            this.ripristino_button.TabIndex = 24;
+            this.ripristino_button.Text = "Ripristino";
+            this.ripristino_button.UseVisualStyleBackColor = true;
+            // 
+            // nomeDaRipr_textBox
+            // 
+            this.nomeDaRipr_textBox.Location = new System.Drawing.Point(156, 278);
+            this.nomeDaRipr_textBox.Name = "nomeDaRipr_textBox";
+            this.nomeDaRipr_textBox.Size = new System.Drawing.Size(100, 20);
+            this.nomeDaRipr_textBox.TabIndex = 25;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(155, 262);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(100, 13);
+            this.label2.TabIndex = 26;
+            this.label2.Text = "Nome da ripristinare";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.nomeDaRipr_textBox);
+            this.Controls.Add(this.ripristino_button);
+            this.Controls.Add(this.Compattazione_button);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.nomeCancLog_textBox);
+            this.Controls.Add(this.Canc_logica_button);
             this.Controls.Add(this.nuovoPrezzo_label);
             this.Controls.Add(this.nuovoNome_label);
             this.Controls.Add(this.nomeDaMod_label);
@@ -241,6 +315,13 @@
         private System.Windows.Forms.Label nuovoPrezzo_label;
         private System.Windows.Forms.Label nuovoNome_label;
         private System.Windows.Forms.Label nomeDaMod_label;
+        private System.Windows.Forms.Button Canc_logica_button;
+        private System.Windows.Forms.TextBox nomeCancLog_textBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button Compattazione_button;
+        private System.Windows.Forms.Button ripristino_button;
+        private System.Windows.Forms.TextBox nomeDaRipr_textBox;
+        private System.Windows.Forms.Label label2;
     }
 }
 
