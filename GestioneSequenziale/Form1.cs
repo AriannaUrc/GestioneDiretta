@@ -143,6 +143,8 @@ namespace GestioneSequenziale
             StreamWriter sw = new StreamWriter(NomeTemp, true);
 
             char limite = char.Parse(";");
+            int originale = 0;
+            int somma = 0;
 
             string[] words = new string[4];
 
@@ -158,7 +160,12 @@ namespace GestioneSequenziale
 
                 if (p.nome == nomeDaRipr_textBox.Text)
                 {
-                    p.cancellato = false;
+                    if (originale == 0)
+                    {
+                        p.cancellato = false;
+                    }
+                    originale++;
+                    somma = somma + p.quantita;
                 }
 
                 sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato);
@@ -167,6 +174,43 @@ namespace GestioneSequenziale
 
             sw.Close();
             sr.Close();
+            File.Delete("dati.csv");
+            File.Move(NomeTemp, "dati.csv");
+
+            StreamReader sr1 = new StreamReader("dati.csv");
+            StreamWriter sw1 = new StreamWriter(NomeTemp, true);
+
+            sr1.BaseStream.Position = 0;
+
+            if (originale > 1)
+            {
+                str = sr1.ReadLine();
+
+                while (str != null)
+                {
+                    originale = 0;
+                    words = str.Split(limite);
+                    p.nome = words[0];
+                    p.prezzo = float.Parse(words[1]);
+                    p.quantita = int.Parse(words[2]);
+                    p.cancellato = bool.Parse(words[3]);
+
+                    if (p.nome == nomeDaRipr_textBox.Text && originale==0)
+                    {
+                        p.quantita = somma;
+                        originale ++;
+                    }
+
+                    if (p.nome != nomeDaRipr_textBox.Text || originale==1)
+                    {
+                        sw1.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato);
+                    }
+                    str = sr1.ReadLine();
+                }
+            }
+
+            sw1.Close();
+            sr1.Close();
             File.Delete("dati.csv");
             File.Move(NomeTemp, "dati.csv");
         }
@@ -231,6 +275,41 @@ namespace GestioneSequenziale
                 }
                 str = sr.ReadLine();
                 
+            }
+            sw.Close();
+            sr.Close();
+            File.Delete("dati.csv");
+            File.Move("datiTemp.csv", "dati.csv");
+        }
+
+        public void Compattazione()
+        {
+            StreamReader sr = new StreamReader("dati.csv");
+            StreamWriter sw = new StreamWriter("datiTemp.csv", true);
+
+            char limite = char.Parse(";");
+            string[] words = new string[4];
+
+
+            string str = sr.ReadLine();
+
+            while (str != null)
+            {
+
+                words = str.Split(limite);
+                p.nome = words[0];
+                p.prezzo = float.Parse(words[1]);
+                p.quantita = int.Parse(words[2]);
+                p.cancellato = bool.Parse(words[3]);
+
+                if (p.cancellato == false)
+                {
+
+                    sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato);
+
+                }
+                str = sr.ReadLine();
+
             }
             sw.Close();
             sr.Close();
@@ -319,7 +398,8 @@ namespace GestioneSequenziale
 
         private void Compattazione_button_Click(object sender, EventArgs e)
         {
-
+            Compattazione();
+            Leggi();
         }
     }
 }
