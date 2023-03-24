@@ -177,13 +177,14 @@ namespace GestioneSequenziale
             File.Delete("dati.csv");
             File.Move(NomeTemp, "dati.csv");
 
-            StreamReader sr1 = new StreamReader("dati.csv");
-            StreamWriter sw1 = new StreamWriter(NomeTemp, true);
-
-            sr1.BaseStream.Position = 0;
+            
 
             if (originale > 1)
             {
+                StreamReader sr1 = new StreamReader("dati.csv");
+                StreamWriter sw1 = new StreamWriter(NomeTemp, true);
+
+                sr1.BaseStream.Position = 0;
                 str = sr1.ReadLine();
 
                 while (str != null)
@@ -207,12 +208,13 @@ namespace GestioneSequenziale
                     }
                     str = sr1.ReadLine();
                 }
+                sw1.Close();
+                sr1.Close();
+                File.Delete("dati.csv");
+                File.Move(NomeTemp, "dati.csv");
             }
 
-            sw1.Close();
-            sr1.Close();
-            File.Delete("dati.csv");
-            File.Move(NomeTemp, "dati.csv");
+            
         }
 
         public void Leggi()
