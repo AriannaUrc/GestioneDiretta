@@ -201,7 +201,7 @@ namespace GestioneSequenziale
                         originale ++;
                     }
 
-                    if (p.nome != nomeDaRipr_textBox.Text || originale==1)
+                    if (p.nome != nomeDaRipr_textBox.Text || originale==1) 
                     {
                         sw1.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato);
                     }
