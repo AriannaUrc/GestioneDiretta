@@ -234,6 +234,7 @@
             this.Compattazione_button.TabIndex = 23;
             this.Compattazione_button.Text = "Compattazione";
             this.Compattazione_button.UseVisualStyleBackColor = true;
+            this.Compattazione_button.Click += new System.EventHandler(this.Compattazione_button_Click);
             // 
             // ripristino_button
             // 
@@ -243,6 +244,7 @@
             this.ripristino_button.TabIndex = 24;
             this.ripristino_button.Text = "Ripristino";
             this.ripristino_button.UseVisualStyleBackColor = true;
+            this.ripristino_button.Click += new System.EventHandler(this.ripristino_button_Click);
             // 
             // nomeDaRipr_textBox
             // 

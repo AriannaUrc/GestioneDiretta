@@ -76,6 +76,7 @@ namespace GestioneSequenziale
                 p.nome = words[0];
                 p.prezzo = float.Parse(words[1]);
                 p.quantita = int.Parse(words[2]);
+                p.cancellato= bool.Parse(words[3]);
 
                 if (p.nome == nome_textbox.Text && p.cancellato==false)
                 {
@@ -122,6 +123,42 @@ namespace GestioneSequenziale
                 if (p.nome == nomeCancLog_textBox.Text && p.cancellato == false)
                 {
                     p.cancellato = true;
+                }
+
+                sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato);
+                str = sr.ReadLine();
+            }
+
+            sw.Close();
+            sr.Close();
+            File.Delete("dati.csv");
+            File.Move(NomeTemp, "dati.csv");
+        }
+
+        public void Ripristino()
+        {
+            string NomeTemp = "datiTemp.csv";
+
+            StreamReader sr = new StreamReader("dati.csv");
+            StreamWriter sw = new StreamWriter(NomeTemp, true);
+
+            char limite = char.Parse(";");
+
+            string[] words = new string[4];
+
+            string str = sr.ReadLine();
+
+            while (str != null)
+            {
+                words = str.Split(limite);
+                p.nome = words[0];
+                p.prezzo = float.Parse(words[1]);
+                p.quantita = int.Parse(words[2]);
+                p.cancellato = bool.Parse(words[3]);
+
+                if (p.nome == nomeDaRipr_textBox.Text)
+                {
+                    p.cancellato = false;
                 }
 
                 sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato);
@@ -184,6 +221,7 @@ namespace GestioneSequenziale
                 p.nome = words[0];
                 p.prezzo = float.Parse(words[1]);
                 p.quantita = int.Parse(words[2]);
+                p.cancellato= bool.Parse(words[3]);
 
                 if (p.nome != nomeDaCancellare_textbox.Text || p.cancellato == true)
                 {
@@ -219,6 +257,7 @@ namespace GestioneSequenziale
                 p.nome = words[0];
                 p.prezzo = float.Parse(words[1]);
                 p.quantita = int.Parse(words[2]);
+                p.cancellato = bool.Parse(words[3]);
 
 
                 if (p.nome == nomeDaMod_textbox.Text && p.cancellato == false)
@@ -270,6 +309,17 @@ namespace GestioneSequenziale
         {
             CancellaLogica();
             Leggi();
+        }
+
+        private void ripristino_button_Click(object sender, EventArgs e)
+        {
+            Ripristino();
+            Leggi();
+        }
+
+        private void Compattazione_button_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
