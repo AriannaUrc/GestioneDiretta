@@ -68,15 +68,20 @@ namespace GestioneSequenziale
 
         public void Salva()
         {
-            StreamReader sr = new StreamReader(FileName);
-            StreamWriter sw = new StreamWriter(NomeTemp, true);
+            var f = new FileStream(FileName, FileMode.Open, FileAccess.ReadWrite);
+            BinaryReader reader = new BinaryReader(f);
+
+            /*StreamReader sr = new StreamReader(FileName);
+            StreamWriter sw = new StreamWriter(NomeTemp, true);*/
 
             bool doppione = false;
             char limite = char.Parse(";");
+            int recordLength = 64;
+            byte[] br;
 
             string[] words = new string[4];
 
-            string str = sr.ReadLine();
+            string str = Convert.ToString(reader.ReadBytes(recordLength));
 
             while (str != null)
             {
@@ -93,20 +98,22 @@ namespace GestioneSequenziale
                 {
                     doppione = true;
                     p.quantita++;
+                    br = br = Encoding.ASCII.GetBytes(FileString(p));
+                    reader.BaseStream.Write(br, 0, br.Length);
                 }
-                sw.WriteLine(FileString(p));
-                str = sr.ReadLine();
+
+
+                f.Seek(recordLength, SeekOrigin.Current);
+                str = Convert.ToString(reader.ReadBytes(recordLength));
             }
 
-            sw.Close();
+            reader.Close();
             if (!doppione)
             {
-                Crea(NomeTemp);
+                Crea(FileName);
             }
 
-            sr.Close();
-            File.Delete(FileName);
-            File.Move(NomeTemp, FileName);
+            f.Close();
         }
 
 
