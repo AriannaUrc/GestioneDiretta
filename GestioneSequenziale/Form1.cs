@@ -35,6 +35,19 @@ namespace GestioneSequenziale
             sw.Close();
         }
 
+        
+
+        public string ProdString(prodotto p)
+        {
+            return "Nome: " + p.nome + "  Prezzo: " + p.prezzo.ToString() + "  Quantità: " + p.quantita.ToString();
+        }
+
+        public string FileString(prodotto p)
+        {
+            return p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato;
+        }
+
+
         public void Crea(string FileName)
         {
             StreamWriter sw = new StreamWriter(FileName, true);
@@ -42,16 +55,9 @@ namespace GestioneSequenziale
             p.prezzo = float.Parse(prezzo_textbox.Text);
             p.quantita = 1;
             p.cancellato = false;
-            sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato);
+            sw.WriteLine(FileString(p));
             sw.Close();
         }
-
-        public string ProdString(prodotto p)
-        {
-            return "Nome: " + p.nome + "  Prezzo: " + p.prezzo.ToString() + "  Quantità: " + p.quantita.ToString();
-        }
-
-
 
         public void Salva()
         {
@@ -83,7 +89,7 @@ namespace GestioneSequenziale
                     doppione = true;
                     p.quantita++;
                 }
-                sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato);
+                sw.WriteLine(FileString(p));
                 str = sr.ReadLine();
             }
 
@@ -125,7 +131,7 @@ namespace GestioneSequenziale
                     p.cancellato = true;
                 }
 
-                sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato);
+                sw.WriteLine(FileString(p));
                 str = sr.ReadLine();
             }
 
@@ -168,7 +174,7 @@ namespace GestioneSequenziale
                     somma = somma + p.quantita;
                 }
 
-                sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato);
+                sw.WriteLine(FileString(p));
                 str = sr.ReadLine();
             }
 
@@ -204,7 +210,7 @@ namespace GestioneSequenziale
 
                     if (p.nome != nomeDaRipr_textBox.Text || originale==1) 
                     {
-                        sw1.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato);
+                        sw1.WriteLine(FileString(p));
                     }
                     str = sr1.ReadLine();
                 }
@@ -272,7 +278,7 @@ namespace GestioneSequenziale
                 if (p.nome != nomeDaCancellare_textbox.Text || p.cancellato == true)
                 {
                     
-                    sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato);
+                    sw.WriteLine(FileString(p));
                     
                 }
                 str = sr.ReadLine();
@@ -307,7 +313,7 @@ namespace GestioneSequenziale
                 if (p.cancellato == false)
                 {
 
-                    sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato);
+                    sw.WriteLine(FileString(p));
 
                 }
                 str = sr.ReadLine();
@@ -348,7 +354,7 @@ namespace GestioneSequenziale
                     p.quantita = 1;
                 }
 
-                sw.WriteLine(p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato);
+                sw.WriteLine(FileString(p));
 
                 str = sr.ReadLine();
 
