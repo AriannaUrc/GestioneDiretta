@@ -25,13 +25,15 @@ namespace GestioneSequenziale
 
 
         public prodotto p;
+        public string FileName="dati.csv";
+        public string NomeTemp = "datiTemp.csv";
 
 
         public Form1()
         {
             InitializeComponent();
             p = new prodotto();
-            StreamWriter sw = new StreamWriter("dati.csv",true);
+            StreamWriter sw = new StreamWriter(FileName, true);
             sw.Close();
         }
 
@@ -44,26 +46,29 @@ namespace GestioneSequenziale
 
         public string FileString(prodotto p)
         {
-            return p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato;
+            return (p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato+";").PadRight(60) + "##";
         }
 
+        public static void scriviAppend(string content, string filename)
+        {
+            var oStream = new FileStream(filename, FileMode.Append, FileAccess.Write, FileShare.Read);
+            StreamWriter sw = new StreamWriter(oStream);
+            sw.WriteLine(content);
+            sw.Close();
+        }
 
         public void Crea(string FileName)
         {
-            StreamWriter sw = new StreamWriter(FileName, true);
             p.nome = nome_textbox.Text;
             p.prezzo = float.Parse(prezzo_textbox.Text);
             p.quantita = 1;
             p.cancellato = false;
-            sw.WriteLine(FileString(p));
-            sw.Close();
+            scriviAppend(FileString(p), FileName);
         }
 
         public void Salva()
         {
-            string NomeTemp= "datiTemp.csv";
-
-            StreamReader sr = new StreamReader("dati.csv");
+            StreamReader sr = new StreamReader(FileName);
             StreamWriter sw = new StreamWriter(NomeTemp, true);
 
             bool doppione = false;
@@ -100,16 +105,15 @@ namespace GestioneSequenziale
             }
 
             sr.Close();
-            File.Delete("dati.csv");
-            File.Move(NomeTemp, "dati.csv");
+            File.Delete(FileName);
+            File.Move(NomeTemp, FileName);
         }
 
 
         public void CancellaLogica()
         {
-            string NomeTemp = "datiTemp.csv";
 
-            StreamReader sr = new StreamReader("dati.csv");
+            StreamReader sr = new StreamReader(FileName);
             StreamWriter sw = new StreamWriter(NomeTemp, true);
 
             char limite = char.Parse(";");
@@ -137,15 +141,13 @@ namespace GestioneSequenziale
 
             sw.Close();
             sr.Close();
-            File.Delete("dati.csv");
-            File.Move(NomeTemp, "dati.csv");
+            File.Delete(FileName);
+            File.Move(NomeTemp, FileName);
         }
 
         public void Ripristino()
         {
-            string NomeTemp = "datiTemp.csv";
-
-            StreamReader sr = new StreamReader("dati.csv");
+            StreamReader sr = new StreamReader(FileName);
             StreamWriter sw = new StreamWriter(NomeTemp, true);
 
             char limite = char.Parse(";");
@@ -180,14 +182,14 @@ namespace GestioneSequenziale
 
             sw.Close();
             sr.Close();
-            File.Delete("dati.csv");
-            File.Move(NomeTemp, "dati.csv");
+            File.Delete(FileName);
+            File.Move(NomeTemp, FileName);
 
             
 
             if (originale > 1)
             {
-                StreamReader sr1 = new StreamReader("dati.csv");
+                StreamReader sr1 = new StreamReader(FileName);
                 StreamWriter sw1 = new StreamWriter(NomeTemp, true);
 
                 sr1.BaseStream.Position = 0;
@@ -216,8 +218,8 @@ namespace GestioneSequenziale
                 }
                 sw1.Close();
                 sr1.Close();
-                File.Delete("dati.csv");
-                File.Move(NomeTemp, "dati.csv");
+                File.Delete(FileName);
+                File.Move(NomeTemp, FileName);
             }
 
             
@@ -225,7 +227,7 @@ namespace GestioneSequenziale
 
         public void Leggi()
         {
-            StreamReader sr = new StreamReader("dati.csv");
+            StreamReader sr = new StreamReader(FileName);
 
             char limite = char.Parse(";");
 
@@ -257,8 +259,8 @@ namespace GestioneSequenziale
 
         public void Cancella()
         {
-            StreamReader sr = new StreamReader("dati.csv");
-            StreamWriter sw = new StreamWriter("datiTemp.csv", true);
+            StreamReader sr = new StreamReader(FileName);
+            StreamWriter sw = new StreamWriter(NomeTemp, true);
 
             char limite = char.Parse(";");
             string[] words = new string[4];
@@ -286,14 +288,14 @@ namespace GestioneSequenziale
             }
             sw.Close();
             sr.Close();
-            File.Delete("dati.csv");
-            File.Move("datiTemp.csv", "dati.csv");
+            File.Delete(FileName);
+            File.Move(NomeTemp, FileName);
         }
 
         public void Compattazione()
         {
-            StreamReader sr = new StreamReader("dati.csv");
-            StreamWriter sw = new StreamWriter("datiTemp.csv", true);
+            StreamReader sr = new StreamReader(FileName);
+            StreamWriter sw = new StreamWriter(NomeTemp, true);
 
             char limite = char.Parse(";");
             string[] words = new string[4];
@@ -321,15 +323,15 @@ namespace GestioneSequenziale
             }
             sw.Close();
             sr.Close();
-            File.Delete("dati.csv");
-            File.Move("datiTemp.csv", "dati.csv");
+            File.Delete(FileName);
+            File.Move(NomeTemp, FileName);
         }
 
 
         public void Modifica()
         {
-            StreamReader sr = new StreamReader("dati.csv");
-            StreamWriter sw = new StreamWriter("datiTemp.csv", true);
+            StreamReader sr = new StreamReader(FileName);
+            StreamWriter sw = new StreamWriter(NomeTemp, true);
 
             char limite = char.Parse(";");
             string[] words = new string[4];
@@ -361,8 +363,8 @@ namespace GestioneSequenziale
             }
             sw.Close();
             sr.Close();
-            File.Delete("dati.csv");
-            File.Move("datiTemp.csv", "dati.csv");
+            File.Delete(FileName);
+            File.Move(NomeTemp, FileName);
         }
 
 
