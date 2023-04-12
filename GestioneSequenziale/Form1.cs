@@ -25,7 +25,7 @@ namespace GestioneSequenziale
 
 
         public prodotto p;
-        public string FileName="dati.csv";
+        public string FileName = "dati.csv";
         public string NomeTemp = "datiTemp.csv";
 
 
@@ -37,7 +37,7 @@ namespace GestioneSequenziale
             sw.Close();
         }
 
-        
+
 
         public string ProdString(prodotto p)
         {
@@ -46,7 +46,7 @@ namespace GestioneSequenziale
 
         public string FileString(prodotto p)
         {
-            return (p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato+";").PadRight(60) + "##";
+            return (p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato + ";").PadRight(60) + "##";
         }
 
         public static void scriviAppend(string content, string filename)
@@ -57,63 +57,71 @@ namespace GestioneSequenziale
             sw.Close();
         }
 
+
+        public static prodotto FromString(string votoStringa, string sep = ";")
+        {
+            prodotto p;
+            String[] fields = votoStringa.Split(sep[0]);
+            p.nome = fields[0];
+            p.prezzo = float.Parse(fields[1]);
+            p.quantita = int.Parse(fields[2]);
+            p.cancellato = bool.Parse(fields[3]);
+            //dalla stringa deve ritornare la variabile Voto v settata con  i valori
+            return p;
+        }
+
         public void Crea(string FileName)
         {
             p.nome = nome_textbox.Text;
             p.prezzo = float.Parse(prezzo_textbox.Text);
             p.quantita = 1;
             p.cancellato = false;
-            scriviAppend(FileString(p), FileName);
+            scriviAppend(FileString(p), "dati.csv");
         }
 
         public void Salva()
         {
-            var f = new FileStream(FileName, FileMode.Open, FileAccess.ReadWrite);
-            BinaryReader reader = new BinaryReader(f);
+            String line;
+            byte[] br;
+            int recordLength = 62;
 
-            /*StreamReader sr = new StreamReader(FileName);
-            StreamWriter sw = new StreamWriter(NomeTemp, true);*/
+            var f = new FileStream("dati.csv", FileMode.Open, FileAccess.ReadWrite);
+            BinaryReader reader = new BinaryReader(f);
+            BinaryWriter writer = new BinaryWriter(f);
+            f.Seek(0, SeekOrigin.Begin);
+
 
             bool doppione = false;
-            char limite = char.Parse(";");
-            int recordLength = 64;
-            byte[] br;
+            char limite = ';';
 
             string[] words = new string[4];
 
-            string str = Convert.ToString(reader.ReadBytes(recordLength));
 
-            while (str != null)
+            while (f.Position < f.Length)
             {
-                
-                
-                doppione = false;
-                words = str.Split(limite);
-                p.nome = words[0];
-                p.prezzo = float.Parse(words[1]);
-                p.quantita = int.Parse(words[2]);
-                p.cancellato= bool.Parse(words[3]);
+                br = reader.ReadBytes(recordLength);
+                //converte in stringa
+                line = Encoding.ASCII.GetString(br, 0, br.Length);
+                Console.WriteLine(line);
+                p = FromString(line);
 
-                if (p.nome == nome_textbox.Text && p.cancellato==false)
+                if (p.nome == nome_textbox.Text && p.cancellato == false)
                 {
                     doppione = true;
                     p.quantita++;
-                    br = br = Encoding.ASCII.GetBytes(FileString(p));
-                    reader.BaseStream.Write(br, 0, br.Length);
+                    f.Seek(-recordLength, SeekOrigin.Current);
+                    writer.Write(FileString(p));
                 }
-
-
-                f.Seek(recordLength, SeekOrigin.Current);
-                str = Convert.ToString(reader.ReadBytes(recordLength));
             }
 
+            writer.Close();
             reader.Close();
+
             if (!doppione)
             {
-                Crea(FileName);
+                Crea(FileName); //per qualche motivo aggiunge una > davanti al nome
             }
 
-            f.Close();
         }
 
 
