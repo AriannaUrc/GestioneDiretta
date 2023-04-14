@@ -46,7 +46,7 @@ namespace GestioneSequenziale
 
         public string FileString(prodotto p)
         {
-            return (p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato + ";").PadRight(60) + "##";
+            return ((p.nome + ";" + p.prezzo + ";" + p.quantita + ";" + p.cancellato + ";").PadRight(60) + "##");
         }
 
         public static void scriviAppend(string content, string filename)
@@ -76,6 +76,7 @@ namespace GestioneSequenziale
             p.prezzo = float.Parse(prezzo_textbox.Text);
             p.quantita = 1;
             p.cancellato = false;
+            MessageBox.Show(FileString(p));
             scriviAppend(FileString(p), "dati.csv");
         }
 
@@ -83,7 +84,7 @@ namespace GestioneSequenziale
         {
             String line;
             byte[] br;
-            int recordLength = 62;
+            int recordLength = 66;
 
             var f = new FileStream("dati.csv", FileMode.Open, FileAccess.ReadWrite);
             BinaryReader reader = new BinaryReader(f);
@@ -97,8 +98,9 @@ namespace GestioneSequenziale
             string[] words = new string[4];
 
 
-            while (f.Position < f.Length)
+            while (f.Position < f.Length-2) //????????????
             {
+
                 br = reader.ReadBytes(recordLength);
                 //converte in stringa
                 line = Encoding.ASCII.GetString(br, 0, br.Length);
@@ -107,10 +109,11 @@ namespace GestioneSequenziale
 
                 if (p.nome == nome_textbox.Text && p.cancellato == false)
                 {
+                    MessageBox.Show("in if");
                     doppione = true;
                     p.quantita++;
-                    f.Seek(-recordLength, SeekOrigin.Current);
-                    writer.Write(FileString(p));
+                    f.Seek(-recordLength+2, SeekOrigin.Current);
+                    writer.Write(Encoding.UTF8.GetBytes(FileString(p)));
                 }
             }
 
@@ -242,33 +245,33 @@ namespace GestioneSequenziale
 
         public void Leggi()
         {
-            StreamReader sr = new StreamReader(FileName);
+            String line;
+            byte[] br;
+            int recordLength = 66;
+
+            var f = new FileStream("dati.csv", FileMode.Open, FileAccess.ReadWrite);
+            BinaryReader reader = new BinaryReader(f);
+
 
             char limite = char.Parse(";");
 
             string[] words = new string[4];
 
-            string str = sr.ReadLine();
-
             output.Items.Clear();
 
-            while (str != null)
-            {
-                words = str.Split(limite);
-                p.nome = words[0];
-                p.prezzo = float.Parse(words[1]);
-                p.quantita = int.Parse(words[2]);
-                p.cancellato = bool.Parse(words[3]);
 
-                if (p.cancellato == false)
-                {
-                    output.Items.Add(ProdString(p));
-                }
-                str = sr.ReadLine();
+            while (f.Position < f.Length)
+            {
+
+                br = reader.ReadBytes(recordLength);
+                //converte in stringa
+                line = Encoding.ASCII.GetString(br, 0, br.Length);
+                p = FromString(line);
+                output.Items.Add(ProdString(p));
             }
 
-            Console.ReadLine();
-            sr.Close();
+            reader.Close();
+
         }
 
 
