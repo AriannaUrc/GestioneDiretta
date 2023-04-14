@@ -51,8 +51,8 @@ namespace GestioneSequenziale
 
         public static void scriviAppend(string content, string filename)
         {
-            var oStream = new FileStream(filename, FileMode.Append, FileAccess.Write, FileShare.Read);
-            StreamWriter sw = new StreamWriter(oStream);
+            var fStream = new FileStream(filename, FileMode.Append, FileAccess.Write, FileShare.Read);
+            StreamWriter sw = new StreamWriter(fStream);
             sw.WriteLine(content);
             sw.Close();
         }
@@ -89,7 +89,6 @@ namespace GestioneSequenziale
             var f = new FileStream("dati.csv", FileMode.Open, FileAccess.ReadWrite);
             BinaryReader reader = new BinaryReader(f);
             BinaryWriter writer = new BinaryWriter(f);
-            f.Seek(0, SeekOrigin.Begin);
 
 
             bool doppione = false;
@@ -119,6 +118,7 @@ namespace GestioneSequenziale
 
             writer.Close();
             reader.Close();
+            f.Close();
 
             if (!doppione)
             {
@@ -247,7 +247,7 @@ namespace GestioneSequenziale
         {
             String line;
             byte[] br;
-            int recordLength = 66;
+            int recordLength = 64;//....?
 
             var f = new FileStream("dati.csv", FileMode.Open, FileAccess.ReadWrite);
             BinaryReader reader = new BinaryReader(f);
@@ -261,8 +261,7 @@ namespace GestioneSequenziale
 
 
             while (f.Position < f.Length)
-            {
-
+            {   
                 br = reader.ReadBytes(recordLength);
                 //converte in stringa
                 line = Encoding.ASCII.GetString(br, 0, br.Length);
@@ -271,6 +270,7 @@ namespace GestioneSequenziale
             }
 
             reader.Close();
+            f.Close();
 
         }
 
