@@ -131,7 +131,7 @@ namespace GestioneSequenziale
         public void CancellaLogica()
         {
 
-            StreamReader sr = new StreamReader(FileName);
+            /*StreamReader sr = new StreamReader(FileName);
             StreamWriter sw = new StreamWriter(NomeTemp, true);
 
             char limite = char.Parse(";");
@@ -160,7 +160,41 @@ namespace GestioneSequenziale
             sw.Close();
             sr.Close();
             File.Delete(FileName);
-            File.Move(NomeTemp, FileName);
+            File.Move(NomeTemp, FileName);*/
+
+            String line;
+            byte[] br;
+            int recordLength = 64;
+
+            var f = new FileStream("dati.csv", FileMode.Open, FileAccess.ReadWrite);
+            BinaryReader reader = new BinaryReader(f);
+            BinaryWriter writer = new BinaryWriter(f);
+
+            char limite = ';';
+
+            string[] words = new string[4];
+
+
+            while (f.Position < f.Length - 2) //????????????
+            {
+
+                br = reader.ReadBytes(recordLength);
+                //converte in stringa
+                line = Encoding.ASCII.GetString(br, 0, br.Length);
+                Console.WriteLine(line);
+                p = FromString(line);
+
+                if (p.nome == nomeCancLog_textBox.Text && p.cancellato == false)
+                {
+                    p.cancellato = true;
+                    f.Seek(-recordLength, SeekOrigin.Current);
+                    writer.Write(Encoding.UTF8.GetBytes(FileString(p)));
+                }
+            }
+
+            writer.Close();
+            reader.Close();
+            f.Close();
         }
 
         public void Ripristino()
@@ -266,6 +300,8 @@ namespace GestioneSequenziale
                 //converte in stringa
                 line = Encoding.ASCII.GetString(br, 0, br.Length);
                 p = FromString(line);
+
+                if (p.cancellato == false)
                 output.Items.Add(ProdString(p));
             }
 
@@ -348,41 +384,41 @@ namespace GestioneSequenziale
 
         public void Modifica()
         {
-            StreamReader sr = new StreamReader(FileName);
-            StreamWriter sw = new StreamWriter(NomeTemp, true);
+            String line;
+            byte[] br;
+            int recordLength = 64;
 
-            char limite = char.Parse(";");
+            var f = new FileStream("dati.csv", FileMode.Open, FileAccess.ReadWrite);
+            BinaryReader reader = new BinaryReader(f);
+            BinaryWriter writer = new BinaryWriter(f);
+
+            char limite = ';';
+
             string[] words = new string[4];
 
 
-            string str = sr.ReadLine();
-
-            while (str != null)
+            while (f.Position < f.Length - 2) //????????????
             {
 
-                words = str.Split(limite);
-                p.nome = words[0];
-                p.prezzo = float.Parse(words[1]);
-                p.quantita = int.Parse(words[2]);
-                p.cancellato = bool.Parse(words[3]);
-
+                br = reader.ReadBytes(recordLength);
+                //converte in stringa
+                line = Encoding.ASCII.GetString(br, 0, br.Length);
+                Console.WriteLine(line);
+                p = FromString(line);
 
                 if (p.nome == nomeDaMod_textbox.Text && p.cancellato == false)
                 {
                     p.nome = nuovoNome_textbox.Text;
                     p.prezzo = float.Parse(nuovoPrezzo_textbox.Text);
                     p.quantita = 1;
+                    f.Seek(-recordLength, SeekOrigin.Current);
+                    writer.Write(Encoding.UTF8.GetBytes(FileString(p)));
                 }
-
-                sw.WriteLine(FileString(p));
-
-                str = sr.ReadLine();
-
             }
-            sw.Close();
-            sr.Close();
-            File.Delete(FileName);
-            File.Move(NomeTemp, FileName);
+
+            writer.Close();
+            reader.Close();
+            f.Close();
         }
 
 
