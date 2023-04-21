@@ -84,7 +84,7 @@ namespace GestioneSequenziale
         {
             String line;
             byte[] br;
-            int recordLength = 66;
+            int recordLength = 64;
 
             var f = new FileStream("dati.csv", FileMode.Open, FileAccess.ReadWrite);
             BinaryReader reader = new BinaryReader(f);
@@ -111,7 +111,7 @@ namespace GestioneSequenziale
                     MessageBox.Show("in if");
                     doppione = true;
                     p.quantita++;
-                    f.Seek(-recordLength+2, SeekOrigin.Current);
+                    f.Seek(-recordLength, SeekOrigin.Current);
                     writer.Write(Encoding.UTF8.GetBytes(FileString(p)));
                 }
             }
@@ -260,7 +260,7 @@ namespace GestioneSequenziale
             output.Items.Clear();
 
 
-            while (f.Position < f.Length)
+            while (f.Position < f.Length-4)
             {   
                 br = reader.ReadBytes(recordLength);
                 //converte in stringa
